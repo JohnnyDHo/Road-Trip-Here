@@ -16,70 +16,25 @@
           href="http://js.api.here.com/v3/3.0/mapsjs-ui.css" />
 </head>
     <body>
-        <div id="map" style="width: 640px; height: 480px"/>
+        <div style="width: 640px; height: 480px" id="mapContainer"></div>
         <script>
-            //Initialize the platform object:
+            // Initialize the platform object:
             var platform = new H.service.Platform({
-                useCIT: true,
-                'app_id': 'PN8T3wV3kFMvAwA5ksRm',
-                'app_code': 'tV-35RIBKzpEz3v-1C0oVw'
+                'app_id': 'HLrqEqmdMAfFZWed1Eg9',
+                'app_code': 'FkZQnw6Y3mQwtKwklnni7Q'
             });
 
+            // Obtain the default map types from the platform object
+            var maptypes = platform.createDefaultLayers();
 
-            // Instantiate a map inside the DOM element with id map. The
-            // map center is in San Francisco, the zoom level is 10:
-            var map = new H.Map(document.getElementById('map'),
-                platform.createDefaultLayers().normal.map, {
-                    center: {lat: 37.7942, lng: -122.4070},
-                    zoom: 15
+            // Instantiate (and display) a map object:
+            var map = new H.Map(
+                document.getElementById('mapContainer'),
+                maptypes.normal.map,
+                {
+                    zoom: 15,
+                    center: { lng: -95.401831, lat: 29.717394 }
                 });
-
-            // Create a group object to hold map markers:
-            var group = new H.map.Group();
-
-            // Create the default UI components:
-            var ui = H.ui.UI.createDefault(map, platform.createDefaultLayers());
-
-            // Add the group object to the map:
-            map.addObject(group);
-
-            // Obtain a Search object through which to submit search
-            // requests:
-            var search = new H.places.Search(platform.getPlacesService()),
-                searchResult, error;
-
-            // Define search parameters:
-            var params = {
-                // Plain text search for places with the word "hotel"
-                // associated with them:
-                'q': 'hotel',
-                //  Search in the Chinatown district in San Francisco:
-                'at': '37.7942,-122.4070'
-            };
-
-            // Define a callback function to handle data on success:
-            function onResult(data) {
-                addPlacesToMap(data.results);
-            }
-
-            // Define a callback function to handle errors:
-            function onError(data) {
-                error = data;
-            }
-
-            // This function adds markers to the map, indicating each of
-            // the located places:
-            function addPlacesToMap(result) {
-                group.addObjects(result.items.map(function (place) {
-                    var marker = new H.map.Marker({lat: place.position[0],
-                        lng: place.position[1]})
-                    return marker;
-                }));
-            }
-
-            // Run a search request with parameters, headers (empty), and
-            // callback functions:
-            search.request(params, {}, onResult, onError);
         </script>
     </body>
 </html>
